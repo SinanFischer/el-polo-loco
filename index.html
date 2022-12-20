@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> El pollo loco </title>
+    <link rel="stylesheet" href="style.css">
+
+
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+
+
+    <script src="/models/cloud.class.js"></script>
+    <script src="models/statusbar.class.js"></script>
+    <script src="models/statusbar-coin.class.js"></script>
+    <script src="models/statusbar-bottle.class.js"></script>
+    <script src="/models/background-object.class.js"></script>
+    <script src="/models/character.class.js"></script>
+    <script src="/models/chicken.class.js"></script>
+    <script src="/models/mini-chicken.class.js"></script>
+    <script src="/models/endboss.class.js"></script>
+
+    <script src="/models/coin.class.js"></script>
+    <script src="/models/throwable-object.class.js"></script>
+    <script src="/models/bottle.class.js"></script>
+
+    <script src="/models/world.class.js"></script>
+    <script src="/models/keyboard.class.js"></script>
+    <script src="/models/level.class.js"></script>
+    <script src="/levels/level1.js"></script>
+    <script src="models/startscreen.class.js"></script>
+
+
+
+    <script src="/js/game.js"></script>
+
+
+</head>
+
+<body>
+
+
+
+    <div class="webpage">
+
+
+
+        <div class="start-screen" id="start-screen">
+        </div>
+
+
+
+        <canvas id="canvas" width="1300" height="600" style="display: none">
+
+        </canvas>
+
+        <div class="key-assignment-infobox">
+            <div class="key-assignment-style">
+                <img src="/img_pollo_locco/img/10_icons/arrow-left.png">
+                <span> Move left </span>
+            </div>
+            <div class="key-assignment-style">
+                <img src="/img_pollo_locco/img/10_icons/arrow-right.png">
+                <span> Move right </span>
+            </div>
+            <div class="key-assignment-style">
+                <img src="/img_pollo_locco/img/10_icons/space.png">
+                <span> Jump</span>
+            </div>
+            <div class="key-assignment-style">
+                <img src="/img_pollo_locco/img/10_icons/d.png">
+                <span> Throw bottle </span>
+            </div>
+            <div class="key-assignment-style zoom" onclick="startGame()"  >
+                <img src="../img_pollo_locco/img/6_salsa_bottle/salsa_bottle.png" class="key-assignment-bottle">
+                <span id="game-start"> Start game </span>
+            </div>
+            <div class="key-assignment-style zoom" onclick="backToMenu()">
+                <img src="../img_pollo_locco/img/6_salsa_bottle/salsa_bottle.png" class="key-assignment-bottle">
+                <span> Menu </span>
+            </div>
+
+        </div>
+
+
+        <div class="start-screen-bg">
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

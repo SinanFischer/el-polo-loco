@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding-top: 4%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url("../img_pollo_locco/img/5_background/desert.png");
+}
+
+.webpage {
+    display: flex;
+    flex-direction: column;
+}
+
+canvas {
+    background-color: black;
+    border: solid 10px rgb(68, 68, 68) ;
+    box-shadow: 0 0 50px rgb(99, 98, 98);
+}
+
+
+.start-screen {
+    width:1300;
+    height: 600; 
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-image: url('../img_pollo_locco/img/9_intro_outro_screens/start/startscreen_2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;   
+    border: solid 10px rgb(68, 68, 68);
+    box-shadow: 0 0 50px rgb(99 98 98);
+
+}
+
+.key-assignment-infobox {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 1300px;
+    height: 80px;
+    background-color : rgba(0, 0, 0, 0.1); 
+    backdrop-filter: blur(10px);
+    border-radius: 0.2rem; 
+    box-shadow: 1px 1px 5px 2px rgb(0 0 0 / 30%); 
+    box-sizing: border-box;
+    font-family: 'Boogaloo';
+    text-shadow: 3px 3px 6px black;
+}
+
+.key-assignment-infobox img {
+    width: 40;
+    height: 40;
+    padding-top: 2px; 
+}
+
+.key-assignment-bottle {
+    margin-top: -10px;
+    width: 60 !important;
+    height: 60 !important;
+    margin-bottom: -10px;
+}
+
+.key-assignment-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    font-weight: 600;
+}
+
+
+
+  .zoom:hover {
+    animation: swing ease-in-out 3s infinite alternate;
+    transform-origin: center -20px;
+    float:left;
+    cursor: pointer;
+}
+
+.zoom:after{
+    content: '';
+    position: absolute;  
+    width: 20px; height: 20px;  
+    top: -10px; left: 50%;
+    z-index: 0;
+    border-bottom: none;
+    border-right: none;
+    transform: rotate(45deg);
+}
+
+ 
+@keyframes swing {
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+
+}
