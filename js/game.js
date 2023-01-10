@@ -1,42 +1,172 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let gameStarted = false; 
+let gameStarted = false;
+
+let game_over_sound = new Audio('./audio/game_over.mp3');
+let game_win_sound = new Audio('./audio/win.mp3');
+
+
+let timeGameStarted = 0.00;
+//let timeGameEnded = 0.00;
+let bestTime = 0.00;
+let playTries = 0;
+let wins = 0;
+let defeats = 0;
+
+let backgroundsMusic = new Audio('./audio/main_mexican_music.mp3');
+
+
+
+async function init() {
+    setURL('https://sinan-fischer.developerakademie.net/el_polo_loco/smallest_backend_ever');
+    await downloadFromServer();
+    leaderboard = JSON.parse(backend.getItem('leaderboard')) || [];
+    loadLocal();
+    createStartHTML();
+    checkViewportWidth();
+    rotateScreen();
+}
+
 
 function startGame() {
-        if (!gameStarted) {
-        gameStarted = true; 
+    if (!gameStarted) {
+        gameStarted = true;
         document.getElementById('game-start').innerHTML = "Restart game"
         document.getElementById('canvas').style.display = "block";
         document.getElementById('start-screen').style.display = "none";
-        initLevel1(); //creates enemys 
-        init();
+        backgroundsMusic.play();
+        initGame();
+
+
+        if (isOnMobile) {
+            showMobileControls();
         }
-        else {
-            gameStarted = false; 
-            world.clearAllIntervals();  
-        }
+    }
+    else { // restarts game 
+        stopGameShowIndex();
+        saveLocal();
+        restartGame3sec();
+
+    }
 
 }
 
 
 
-function init() {
-    canvas = document.getElementById('canvas');
+function initGame() {
+    playTries++;
+    initLevel1(); //creates enemys
+    canvas = document.getElementById('canvas');createStartHTML
     world = new World(canvas, keyboard);
+    setTimeGameStarts();
 }
 
 
-function backToMenu() {
-    world.clearAllIntervals();  
-
-    /* 
+// closes game (stops all going processes for canvas) and shows startscreen html
+function stopGameShowIndex() {
+    gameStarted = false; // 1! 
+    if (fullscreenOpen) closeFullscreen();
+    world.endboss.pauseMusicByEnd();
+    backgroundsMusic.pause();
+    world.clearAllIntervals();
     document.getElementById('canvas').style.display = "none";
     document.getElementById('start-screen').style.display = "flex";
-
-    */
 }
 
+
+// gets back to menu 
+function backToMenu(winOrLost) {
+    if (gameStarted) {
+        stopGameShowIndex();
+        saveLocal();
+        createStartHTML();
+        hideMobileControls();
+        showEndScreen(winOrLost);
+    }
+    else {
+        saveLocal();
+        createStartHTML();
+    }
+}
+
+
+// decides which screen is displayed by win or loose 
+function showEndScreen(winOrLost) {
+    if (winOrLost === 0) {
+        gameOverScreen();
+        defeats++;
+    }
+    if (winOrLost === 1) {
+        winnerScreen();
+        wins++;
+        setTimeGameEnded();
+    }
+}
+
+
+function setTimeGameStarts() {
+    timeGameStarted = new Date().getTime();
+}
+
+
+// returns true when in past 3 seconds was hit
+function setTimeGameEnded() {
+    let timepassed = new Date().getTime() - timeGameStarted;  // difference in miliseconds
+    timepassed = timepassed / 1000;  // Difference in seconds
+    timepassed = timepassed.toFixed(2);
+    setBestTime(timepassed);
+}
+
+
+function setBestTime(timepassed) {
+    if (timepassed >= bestTime) {
+        bestTime = timepassed;
+    }
+    if (bestTime === 0) {
+        bestTime = timepassed;
+    }
+    else {
+        console.log('nothing happens')
+    }
+}
+
+
+function saveLocal() {
+    let bestTimeAsText = JSON.stringify(bestTime);
+    localStorage.setItem('bestTime', bestTimeAsText);
+
+    let playTriesAsText = JSON.stringify(playTries);
+    localStorage.setItem('playTries', playTriesAsText);
+
+    let winsAsText = JSON.stringify(wins);
+    localStorage.setItem('wins', winsAsText);
+
+    let defeatsAsText = JSON.stringify(defeats);
+    localStorage.setItem('defeats', defeatsAsText);
+
+
+}
+
+
+function loadLocal() {
+    let bestTimeAsText = localStorage.getItem('bestTime');
+    let playTriesAsText = localStorage.getItem('playTries');
+    let winsAsText = localStorage.getItem('wins');
+    let defeatsAsText = localStorage.getItem('defeats');
+
+
+    if (bestTimeAsText && defeatsAsText) {
+
+        bestTime = JSON.parse(bestTimeAsText);
+        playTries = JSON.parse(playTriesAsText);
+        wins = JSON.parse(winsAsText);
+        defeats = JSON.parse(defeatsAsText);
+    }
+}
+
+
+// ----------------- KEY PRESSES ----------------- // 
 
 window.addEventListener("keydown", (pressedKey) => {
 
@@ -62,8 +192,10 @@ window.addEventListener("keydown", (pressedKey) => {
 
 window.addEventListener("keyup", (pressedKey) => {
 
+    //console.log('keyup key', pressedKey)
+
     let keyCode = pressedKey['keyCode'];
-    console.log('DER wude auf false gesetzt ', keyCode, pressedKey)
+    //console.log('DER wude auf false gesetzt ', keyCode, pressedKey)
     if (keyCode = 37) keyboard.LEFT = false;
     if (keyCode = 39) keyboard.RIGHT = false;
     if (keyCode = 40) keyboard.DOWN = false;
@@ -72,53 +204,83 @@ window.addEventListener("keyup", (pressedKey) => {
         keyboard.SPACE = false;  // setzt space auf true. mit keyboard.space wird auf die variable in der class Keyboard zugegriffen
         keyboard.UP = false;
     }
-}); 
+});
 
 
+// ----------------- MOBILE TOUCH ----------------- // 
+
+function touchBtnEvents() {
+
+    document.getElementById('btn-left').addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        keyboard.LEFT = true;
+    })
+    document.getElementById('btn-left').addEventListener("touchend", (e) => {
+        keyboard.LEFT = false;
+    })
+
+    document.getElementById('btn-right').addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        keyboard.RIGHT = true;
+    })
+    document.getElementById('btn-right').addEventListener("touchend", (e) => {
+        keyboard.RIGHT = false;
+    })
+
+    document.getElementById('btn-jump').addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        keyboard.SPACE = true;
+    })
+    document.getElementById('btn-jump').addEventListener("touchend", (e) => {
+
+        keyboard.SPACE = false;
+    })
+
+    document.getElementById('btn-throw').addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        keyboard.D = true;
+    })
+    document.getElementById('btn-throw').addEventListener("touchend", (e) => {
+        keyboard.D = false;
+    })
+}
 
 
-/* 
+window.addEventListener("touchstart", (pressedKey) => {
 
-***************************************** FEINHEITEN UND TODOS *****************************************
+    let keyCode = pressedKey['keyCode'];
 
-
-    ENDGEGNER ANIMATION UND ANGRIFF
-q
-    MINI KÜKEN MIT EINBAUEN
-
-    SCHADEN BEKOMMEN AUCH WENN MAN IM GEGENER BLEIBT
-
-
-
-
-
-
-Bug fixen das immer 1 flasche mehr drinne ist
-
-
-
-
-
-
+    if (keyCode === 37) {
+        keyboard.LEFT = true;
+    }
+    if (keyCode === 39) {
+        keyboard.RIGHT = true;
+    }
+    if (keyCode === 40) {
+        keyboard.DOWN = true;
+    }
+    if (keyCode === 68) {
+        keyboard.D = true;
+    }
+    if (keyCode === 32 || keyCode === 38) {
+        keyboard.UP = true;
+        keyboard.SPACE = true;
+    }
+});
 
 
-***************************************** IDEEN FÜR WEITERES SPIEL *****************************************
+window.addEventListener("keyup", (pressedKey) => {
 
+    //console.log('keyup key', pressedKey)
 
-
-SAFE THE TACO BEFORE THE CHICKEN ARMY ARRIVES !!!!!   ** AUFGABE anzeigen lassen oben rechts
-Taco placed behind ENDBOSS, after some Time when the taco is not collected. Many Enemys will spawn and run over the Player to dead.
-
-
-SPIELFELD VERLÄNGERN UND ABHAUEN ZU KÖNNEN VOR DEM BOSS UND MEHR FLASCHEN ZU SAMMELN
-STACHELDRAHT ALS ENDE ZEICHNEN
-
-
-Ein Shop einbauen für neue Gegner oder Animationen
-gesammelte Münzen werden gespeichert 
-
-Spiel pausierbar machen 
-
-
-
-*/ 
+    let keyCode = pressedKey['keyCode'];
+    //console.log('DER wude auf false gesetzt ', keyCode, pressedKey)
+    if (keyCode = 37) keyboard.LEFT = false;
+    if (keyCode = 39) keyboard.RIGHT = false;
+    if (keyCode = 40) keyboard.DOWN = false;
+    if (keyCode = 68) keyboard.D = false;
+    if (keyCode = 32 || keyCode === 38) {
+        keyboard.SPACE = false;  // setzt space auf true. mit keyboard.space wird auf die variable in der class Keyboard zugegriffen
+        keyboard.UP = false;
+    }
+});

@@ -5,48 +5,267 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-image: url("../img_pollo_locco/img/5_background/desert.png");
+    background-image: url("./img_pollo_locco/img/5_background/desert.png");
+}
+
+#rotate-screen {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden; 
+}
+
+#rotate-screen img {
+    width: 100%;
+    object-fit: cover;
+}
+
+
+#fullscreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .webpage {
     display: flex;
+    align-items: center;
     flex-direction: column;
 }
 
+.fullscreen-btn{
+    display: none;
+    position: absolute;
+    top: 20;
+}
+
+
+#controls {
+    bottom: 20vh;
+    left: 0px;
+    right: 0;
+    position: relative;
+    height: 0%;
+    display: none;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.01);
+    margin: 0;
+}
+
+/* 
+#controls {
+    bottom: 0px;
+    left: 0px;
+    right: 0;
+    position: absolute;
+    height: 12%;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.01);
+    margin: 0;
+}
+
+
+*/ 
+
+#controls button {
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.01);
+    border: 0;
+}
+
+/* filter: brightness(0.8);  when touched*/ 
+
+#controls img {
+    width:  67;
+    height: 67;
+}
+
+
+.controls-left {
+    gap: 10%;
+}
+
+.controls-right {
+    display: flex;
+    align-items: center;
+}
+
+.controls-right img {
+    width: 65 !important;
+    height: 65 !important;
+}
+
 canvas {
-    background-color: black;
-    border: solid 10px rgb(68, 68, 68) ;
+
+    display: block;
+    border: solid 10px rgb(68, 68, 68);
     box-shadow: 0 0 50px rgb(99, 98, 98);
+}
+
+ /* my smartphone = 920 x 450 */ 
+@media only screen and (max-height:920) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height:450) {
+    canvas {
+        height: 100vh;
+    }
 }
 
 
 .start-screen {
-    width:1300;
-    height: 600; 
+    width: 90vw;
+    height: 80vh;
     background-color: black;
+
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background-image: url('../img_pollo_locco/img/9_intro_outro_screens/start/startscreen_2.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;   
-    border: solid 10px rgb(68, 68, 68);
-    box-shadow: 0 0 50px rgb(99 98 98);
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    border: solid 10px rgba(68, 68, 68, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: 'Boogaloo';
+    color: #ffffff;
+    font-size: 29px;
+    text-shadow: 2px 2px 5px rgb(0, 0, 0);
 
 }
+
+.head-line {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.head-line span {
+    width: 33%;
+    text-shadow: 2px 2px 5px rgb(0, 0, 0);
+    padding: 30px;
+}
+
+.story-hl {
+    font-size: 40px;
+}
+
+.best-list-field {
+    font-size: 20px;
+    color: rgb(201, 184, 184);
+}
+
+.best-list-field:hover {
+    color: white;
+    cursor: pointer;
+}
+
+
+
+
+.story-text {
+    margin-top: -10px;
+    width: 90%;
+    color: #ffffff;
+    font-size: 29px;
+    text-shadow: 2px 2px 5px rgb(0, 0, 0);
+}
+
+
+
+
+.bottom-line {
+    width: 100%;
+    font-family: 'Boogaloo';
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #ffffff;
+    font-size: 20px;
+    text-shadow: 2px 2px 5px rgb(0, 0, 0);
+    font-weight: 600;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+
+.bottom-line span {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 125px;
+}
+
+.start-screen button {
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    background: linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+    background-color: #ffec64;
+    border-radius: 13px;
+    border: 1px solid #ffaa22;
+    display: inline-block;
+    cursor: pointer;
+    color: #333333;
+    font-family: Arial;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 11px 44px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #ffee66;
+}
+
+.start-screen button:hover {
+    background: linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+    background-color: #ffab23;
+}
+
+.start-screen button:active {
+    position: relative;
+    top: 1px;
+}
+
+
+
+
+
+.start-screen img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
 
 .key-assignment-infobox {
     margin-top: 15px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 1300px;
+    width: 100%;
     height: 80px;
-    background-color : rgba(0, 0, 0, 0.1); 
+    background-color: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    border-radius: 0.2rem; 
-    box-shadow: 1px 1px 5px 2px rgb(0 0 0 / 30%); 
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px 2px rgb(0 0 0 / 30%);
     box-sizing: border-box;
     font-family: 'Boogaloo';
     text-shadow: 3px 3px 6px black;
@@ -55,7 +274,7 @@ canvas {
 .key-assignment-infobox img {
     width: 40;
     height: 40;
-    padding-top: 2px; 
+    padding-top: 2px;
 }
 
 .key-assignment-bottle {
@@ -76,28 +295,185 @@ canvas {
 
 
 
-  .zoom:hover {
+.zoom:hover {
     animation: swing ease-in-out 3s infinite alternate;
     transform-origin: center -20px;
-    float:left;
+    float: left;
     cursor: pointer;
 }
 
-.zoom:after{
+.zoom:after {
     content: '';
-    position: absolute;  
-    width: 20px; height: 20px;  
-    top: -10px; left: 50%;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -10px;
+    left: 50%;
     z-index: 0;
     border-bottom: none;
     border-right: none;
     transform: rotate(45deg);
 }
 
- 
+
 @keyframes swing {
-    25% { transform: rotate(3deg); }
-    75% { transform: rotate(-3deg); }
-    100% { transform: rotate(0deg); }
+    25% {
+        transform: rotate(3deg);
+    }
+
+    75% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+.back-leaderboard {
+    position: relative;
+    color: rgb(201, 184, 184);
+    height: 0px;
+    font-size: 25px;
+}
+
+.back-leaderboard:hover {
+    cursor: pointer;
+    color: white;
+}
+
+.leaederboard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    gap: 10px;
+
+}
+
+
+.table-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.info {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.table-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+}
+
+
+.data {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+
+
+/* INPUT FIELD LEADERBOARD*/
+
+
+.input-div {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-div input {
+    width: 33%;
+    height: 50px;
+    text-align: center;
+    font-size: 29px;
+    font-family: 'Boogaloo', sans-serif;
+    border: solid 10px rgba(68, 68, 68, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    color: white;
+
+    opacity: 0.4;
+
+
+} 
+
+
+/* opacity: 1;
+filter: alpha(opacity=0);
+
+*/
+
+
+
+/*------------------------ RESPONSIVE -------------------------*/
+
+@media (max-width: 1300px) {
+
+    .start-screen {
+        width: 90%;
+        height: 90%;
+        border-radius: 0;
+    }
+    
+    .story-text {
+        font-size: 23px;
+
+    }
+
+
+}
+
+
+@media (max-width: 1300px) {
+
+    .webpage {
+        display: block;
+    }
+
+    .start-screen {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    body {
+        padding-top: 0;
+
+    }
+
+
+
+    
+    .key-assignment-infobox img {
+        width: 30px;
+        height: 30px;
+        padding-top: 2px;
+    }
+
+    .key-assignment-bottle {
+        margin-top: -5px;
+        width: 50px !important;
+        height: 50px !important;
+        margin-bottom: -10px;
+    }
 
 }

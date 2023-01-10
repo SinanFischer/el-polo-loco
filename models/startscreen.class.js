@@ -1,7 +1,7 @@
 class StartScreen extends drawableObject{
 
     IMAGE_STARTSCREEN = [
-        '../img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png'
+        './img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png'
     ]
 
     x = 200; 

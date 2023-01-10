@@ -38,11 +38,29 @@ class MovableObject extends drawableObject{
 
 
 
-
     hit() {
         if (!this.isHurt()) {
             this.energy -= 20; 
+            this.lastHit = new Date().getTime(); // sets  past miliseconds from 1.1. 1970
+            if (this instanceof Character) { this.ouch_sound.play(); };  
         }
+        if (this.isDead()) {
+            this.energy = 0; 
+            this.collidable = false; 
+            this.speed = 0; 
+        } else {
+            
+        }
+    }
+
+
+    hitFromBoss() {
+        if (!this.isHurt()) {
+            this.energy -= 50; 
+            this.x -= 60; 
+            if (this instanceof Character) { this.ouch_sound.play(); };  
+        }
+
         if (this.isDead()) {
             this.energy = 0; 
             this.collidable = false; 
@@ -57,7 +75,7 @@ class MovableObject extends drawableObject{
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // difference in miliseconds
         timepassed = timepassed / 1000;  // Difference in seconds
-        return timepassed < 0.2; // returns true when hurt is 3 seconds in past, otherwise returns false
+        return timepassed < 1; // returns true when hurt is 3 seconds in past, otherwise returns false
     }
 
 
@@ -87,40 +105,23 @@ class MovableObject extends drawableObject{
     }
 
 
-        
     // character.isColliding(chicken); 
     isColliding(mo) {
         if (mo.collidable) {
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && 
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; 
+        return this.x + this.width - this.offset.right > mo.x &&
+            this.y + this.height - this.offset.bottom  > mo.y + mo.offset.top && 
+            this.x + this.offset.left < mo.x + mo.width  &&
+            this.y + this.offset.top < mo.y + mo.height; 
         }
             else {
 
             }
     }
 
-
-    /*
-        
-    // character.isColliding(chicken); 
-    isColliding(mo) {
-        if (mo.collidable) {
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-            this.y + this.height - this.offset.bottom > mo.y - mo.offset.top && 
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom; 
-        }
-            else {
-
-            }
-    }
-*/
 
     // minichicken will turn back when they x pixels behind character
     characterIsBehind(mo) {
-        return this.x + this.width > mo.x + mo.width + 400; 
+        return this.x + this.width > mo.x + mo.width + 800; 
     }
 
 
@@ -142,7 +143,7 @@ class MovableObject extends drawableObject{
     playAnimation(images) {
         //Walk animation
         let i = this.currentImage % images.length; // let i = 5 % (<= modulu) 6; => 0, Rest 5  // Modulu nutzt immer nur den Rest
-        // i = 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,.....
+        // i = 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5,...
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;

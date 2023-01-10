@@ -1,12 +1,10 @@
 class Coin extends MovableObject {
 
 
-
     IMAGES_COIN = [
-        '../img_pollo_locco/img/8_coin/coin_1.png',
-        '../img_pollo_locco/img/8_coin/coin_2.png'
+        './img_pollo_locco/img/8_coin/coin_1.png',
+        './img_pollo_locco/img/8_coin/coin_2.png'
     ];
-
 
     offset = {
         top: 50,
@@ -15,13 +13,13 @@ class Coin extends MovableObject {
         right: 60
     }
 
+    get_coin_sound = new Audio('./audio/get_coin.wav'); 
 
-    get_coin_sound = new Audio('../audio/get_coin.wav'); 
 
     constructor() {
         super().loadImage(this.IMAGES_COIN[0]);  // loads first image of object 
         this.loadImages(this.IMAGES_COIN);
-        this.x = 200 + Math.random() * 4500; // Zahl zwischen  math.random generiert zahl zwischen 0 und 1
+        this.x = 600 + Math.random() * 4300; // Zahl zwischen  math.random generiert zahl zwischen 0 und 1
         this.y = 150 + Math.random() * 200; // Zahl zwischen  math.random generiert zahl zwischen 0 und 1
         this.animate();
     }
