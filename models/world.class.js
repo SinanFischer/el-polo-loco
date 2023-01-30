@@ -10,6 +10,7 @@ class World {
     ctx; //steht für context 
     keyboard;
     camera_x = 0;
+    showBossStatusBar = false; 
 
 
     startScreen = new StartScreen();
@@ -19,7 +20,7 @@ class World {
     statusBarEndBoss = new StatusBarEndBoss();
     throwableObject = [];
     throwNotallowed = false;
-    bossBattleStarted = false;
+
 
     intervalIds = []; // all set intervals id are saved here
 
@@ -30,14 +31,19 @@ class World {
         this.ctx = canvas.getContext('2d');  // setzt 2d oder 3d
         this.canvas = canvas;
         this.keyboard = keyboard;
+       this.draw();
+       this.setWorld();
+       this.run();
+       this.checkPositions();
+
+    }
+
+// starts game when all datas loaded
+    startGameWorld() {
         this.draw();
         this.setWorld();
         this.run();
         this.checkPositions();
-
-
-
-
     }
 
 
@@ -60,15 +66,15 @@ class World {
         }, 75);
     }
 
+
     // creates new throw bottle and checks when pressed the thrown key
     checkThrowObjects() {
-        if (this.keyboard.D && this.statusBarBottle.collectedBottles > 0 && !this.hasThrown() && !this.character.otherDirection && !this.throwNotallowed) {
+        if (this.keyboard.D && this.statusBarBottle.collectedBottles > 0 && !this.hasThrown() &&!this.throwNotallowed) {
             this.statusBarBottle.setCollectedBottles(this.character.collectedBottles--)
             let thrownBottle = new throwableObject(this.character.x, this.character.y);
             this.throwableObject.push(thrownBottle);
             this.lastThrow = new Date().getTime(); // sets  past miliseconds from 1.1. 1970
             this.checkCollisionsBottle(thrownBottle);
-
         }
     }
 
@@ -79,14 +85,11 @@ class World {
                 if (thrownBottle.isColliding(enemy)) {
                     thrownBottle.bottleSplash();
                     enemy.hit();
-
                     if (enemy instanceof Endboss) {
                         let endbossEnergy = enemy.energy;
                         this.statusBarEndBoss.setPercentageEndBoss(endbossEnergy);
                     }
-
                     else {
-
                     }
                 }
             });
@@ -102,46 +105,65 @@ class World {
 
 
     checkCollisions() {
-
         // checks collidings with items
         setInterval(() => {
             this.characterCollectCoin();
             this.characterCollectBottle();
         }, 100);
-
         // checks collidings with enemys
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
-
-                    if (this.character.isAboveGround()) {  // when (!enemy instanceof Endboss) somehow didnt worked in one if() statement
-                        if (enemy instanceof Endboss) { }
-                        else {
-                            enemy.hit();
-                            enemy.animate();
-                            this.character.jumpedOnEnemy();
-                        }
-                    }
-                    else {
-
-                        if (enemy instanceof Endboss) {
-                            if (!enemy.isAttacking) {
-                                this.character.hitFromBoss();
-                                enemy.isAttacking = true;
-                            }
-                        }
-
-                        else {
-                            this.character.hit();
-                            enemy.otherDirection = true;
-                        }
-
-                        this.statusBar.setPercentage(this.character.energy);
-
-                    }
+                    this.playerCollidingWithEnemy(enemy);
                 }
             });
         }, 90);
+    }
+
+
+
+    /** in case player is colliding with an enemy 
+     * 
+     * @param {object} enemy - contains specific class object from colliding enemy  
+     */
+    playerCollidingWithEnemy(enemy) {
+        if (this.character.isAboveGround()) {  // when character jumps on enemy
+            this.wasHitFromAbove(enemy);
+        }
+        else {
+            if (enemy instanceof Endboss) { this.playerGetHitFromBoss(enemy); }
+            else {
+                this.character.hit();
+                enemy.otherDirection = true;
+            }
+            this.statusBar.setPercentage(this.character.energy);
+        }
+    }
+
+
+    /** call functions when an enemy was hit from above
+     * 
+     * @param {object} enemy - contains specific class object from colliding enemy  
+     */
+    wasHitFromAbove(enemy) {
+        if (enemy instanceof Endboss) { }
+        else {
+            enemy.hit();
+            enemy.animate();
+            this.character.jumpedOnEnemy();
+        }
+    }
+
+
+    /** when player get a hit from boss
+     * 
+     * @param {object} enemy  - contains specific class object from colliding enemy
+     */
+    playerGetHitFromBoss(enemy) {
+        if (!enemy.isAttacking) {
+            this.character.hitFromBoss();
+            enemy.isAttacking = true;
+        }
     }
 
 
@@ -168,19 +190,15 @@ class World {
 
 
     checkPositions() {
-        // checks position so mini chickens run other direction when they run x pixels behind/front character
+        // checks position smaller enemies run other direction when they run x pixels behind/front character
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-
                 if (this.character.characterIsBehind(enemy)) {
                     enemy.otherDirection = true;
                 }
-
                 else if (this.character.characterIsInFront(enemy, 1400)) {
                     enemy.otherDirection = false;
                 }
-
-
             });
         }, 90);
 
@@ -189,22 +207,18 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (enemy instanceof Endboss) {
                     if (!this.character.characterIsInFront(enemy, this.canvas.width)) {
-
-                        this.bossBattleStarted = true; 
                         this.throwNotallowed = true;
                         enemy.bossFightStartSequence();
                         setTimeout(() => {
                             this.throwNotallowed = false;
+                            this.showBossStatusBar = true; 
                         }, 5400)
                         clearInterval(endbossSequenceInterval);
                     }
                 }
             });
         }, 100);
-
-
     }
-
 
 
     draw() {
@@ -219,14 +233,15 @@ class World {
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
+        if (this.showBossStatusBar > 0) this.addToMap(this.statusBarEndBoss);
 
-        this.addToMap(this.statusBarEndBoss);
-        // if (this.bossBattleStarted) 
+
         this.ctx.translate(-this.camera_x, 0);
 
         this.addObjectsToMap(this.level.items);
         this.addObjectsToMap(this.level.throwableObjects);
         this.addObjectsToMap(this.level.enemies);
+
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.throwableObject);
@@ -252,6 +267,7 @@ class World {
             this.addToMap(o);
         });
     }
+
 
     /** draws the image on canvas
      * 
@@ -284,8 +300,5 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
-
-
-
 
 } 

@@ -1,5 +1,6 @@
 class throwableObject extends MovableObject {
 
+    lastDirectionRight = true; 
     bottleSplashed = false; 
     bottle_smashed_sound = new Audio ('./audio/smash_glass.mp3')
 
@@ -37,9 +38,19 @@ class throwableObject extends MovableObject {
         this.fallSpeedY = 15; 
         this.applyGravity();
 
+        if (characterLooksRight) {
+            this.throwRight(); 
+        }
+        else {
+            this.throwLeft(); 
+        }
+    }
+
+
+    throwLeft() {
         let spinAnimationIv = setInterval(() => {
             if (!this.bottleSplashed) {
-            this.x += 40;
+                this.x -=40; 
             this.playAnimation(this.IMAGES_BOTTLE_ROTATION);
             }
             else {
@@ -47,6 +58,20 @@ class throwableObject extends MovableObject {
             }
         },50);
     }
+
+
+    throwRight() {
+        let spinAnimationIv = setInterval(() => {
+            if (!this.bottleSplashed) {
+                this.x +=40; 
+            this.playAnimation(this.IMAGES_BOTTLE_ROTATION);
+            }
+            else {
+                clearInterval(spinAnimationIv); 
+            }
+        },50);
+    }
+
 
 
     bottleSplash() { 

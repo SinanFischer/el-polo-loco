@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
+let characterLooksRight = true; // important for throwing direction
 
 let game_over_sound = new Audio('./audio/game_over.mp3');
 let game_win_sound = new Audio('./audio/win.mp3');
@@ -35,10 +36,9 @@ function startGame() {
         document.getElementById('game-start').innerHTML = "Restart game"
         document.getElementById('canvas').style.display = "block";
         document.getElementById('start-screen').style.display = "none";
-        backgroundsMusic.play();
+        document.getElementById('fullscreen-btn').style.display = "flex";
+        toggleMainMusic('startGame'); 
         initGame();
-
-
         if (isOnMobile) {
             showMobileControls();
         }
@@ -49,7 +49,6 @@ function startGame() {
         restartGame3sec();
 
     }
-
 }
 
 
@@ -68,7 +67,7 @@ function stopGameShowIndex() {
     gameStarted = false; // 1! 
     if (fullscreenOpen) closeFullscreen();
     world.endboss.pauseMusicByEnd();
-    backgroundsMusic.pause();
+    stopMainMusic(); 
     world.clearAllIntervals();
     document.getElementById('canvas').style.display = "none";
     document.getElementById('start-screen').style.display = "flex";
@@ -83,6 +82,7 @@ function backToMenu(winOrLost) {
         createStartHTML();
         hideMobileControls();
         showEndScreen(winOrLost);
+
     }
     else {
         saveLocal();
@@ -144,8 +144,6 @@ function saveLocal() {
 
     let defeatsAsText = JSON.stringify(defeats);
     localStorage.setItem('defeats', defeatsAsText);
-
-
 }
 
 
@@ -154,7 +152,6 @@ function loadLocal() {
     let playTriesAsText = localStorage.getItem('playTries');
     let winsAsText = localStorage.getItem('wins');
     let defeatsAsText = localStorage.getItem('defeats');
-
 
     if (bestTimeAsText && defeatsAsText) {
 
@@ -174,9 +171,11 @@ window.addEventListener("keydown", (pressedKey) => {
 
     if (keyCode === 37) {
         keyboard.LEFT = true;
+        characterLooksRight = false; 
     }
     if (keyCode === 39) {
         keyboard.RIGHT = true;
+        characterLooksRight = true; 
     }
     if (keyCode === 40) {
         keyboard.DOWN = true;
@@ -196,11 +195,11 @@ window.addEventListener("keyup", (pressedKey) => {
 
     let keyCode = pressedKey['keyCode'];
     //console.log('DER wude auf false gesetzt ', keyCode, pressedKey)
-    if (keyCode = 37) keyboard.LEFT = false;
-    if (keyCode = 39) keyboard.RIGHT = false;
-    if (keyCode = 40) keyboard.DOWN = false;
-    if (keyCode = 68) keyboard.D = false;
-    if (keyCode = 32 || keyCode === 38) {
+    if (keyCode === 37) keyboard.LEFT = false;
+    if (keyCode === 39) keyboard.RIGHT = false;
+    if (keyCode === 40) keyboard.DOWN = false;
+    if (keyCode === 68) keyboard.D = false;
+    if (keyCode === 32 || keyCode === 38) {
         keyboard.SPACE = false;  // setzt space auf true. mit keyboard.space wird auf die variable in der class Keyboard zugegriffen
         keyboard.UP = false;
     }
@@ -214,14 +213,17 @@ function touchBtnEvents() {
     document.getElementById('btn-left').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.LEFT = true;
+        characterLooksRight = false; 
     })
     document.getElementById('btn-left').addEventListener("touchend", (e) => {
         keyboard.LEFT = false;
+
     })
 
     document.getElementById('btn-right').addEventListener("touchstart", (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
+        characterLooksRight = true; 
     })
     document.getElementById('btn-right').addEventListener("touchend", (e) => {
         keyboard.RIGHT = false;
@@ -232,7 +234,6 @@ function touchBtnEvents() {
         keyboard.SPACE = true;
     })
     document.getElementById('btn-jump').addEventListener("touchend", (e) => {
-
         keyboard.SPACE = false;
     })
 
@@ -275,12 +276,24 @@ window.addEventListener("keyup", (pressedKey) => {
 
     let keyCode = pressedKey['keyCode'];
     //console.log('DER wude auf false gesetzt ', keyCode, pressedKey)
-    if (keyCode = 37) keyboard.LEFT = false;
-    if (keyCode = 39) keyboard.RIGHT = false;
-    if (keyCode = 40) keyboard.DOWN = false;
-    if (keyCode = 68) keyboard.D = false;
-    if (keyCode = 32 || keyCode === 38) {
+    if (keyCode === 37) keyboard.LEFT = false;
+    if (keyCode === 39) keyboard.RIGHT = false;
+    if (keyCode === 40) keyboard.DOWN = false;
+    if (keyCode === 68) keyboard.D = false;
+    if (keyCode === 32 || keyCode === 38) {
         keyboard.SPACE = false;  // setzt space auf true. mit keyboard.space wird auf die variable in der class Keyboard zugegriffen
         keyboard.UP = false;
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+

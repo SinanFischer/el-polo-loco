@@ -1,3 +1,23 @@
+ 
+
+function toggleMainMusic(startGame) {
+    if ( !backgroundsMusic.paused && !startGame) {
+        stopMainMusic(); 
+    }
+    else if (backgroundsMusic.paused ||startGame) {
+        backgroundsMusic.play(); 
+        document.getElementById('toggleMusic').innerHTML = 'Music on'; 
+    }
+    else {
+        console.log('Es ist ein Fehler bei der Musik aufgetreten'); 
+    }
+}
+
+
+function stopMainMusic() {
+    backgroundsMusic.pause(); 
+    document.getElementById('toggleMusic').innerHTML = 'Music off'; 
+}
 
 function restartGame3sec() {
     document.getElementById('start-screen').innerHTML = `
@@ -48,6 +68,8 @@ function createStartHTML() {
         <span > Tries/Loses/Wins <span id="Tries"> ${playTries}/${defeats}/${wins} </span> </span> 
     </div> 
     `;
+
+    document.getElementById('fullscreen-btn').style.display = "none";
 }
 
 

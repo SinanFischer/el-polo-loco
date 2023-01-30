@@ -18,6 +18,11 @@ class Character extends MovableObject {
         right: 30
     }
 
+    IMAGES_STANDING = [ 
+        './img_pollo_locco/img/2_character_pepe/2_walk/W-21.png',
+        './img_pollo_locco/img/2_character_pepe/2_walk/W-22.png',   
+    ]; 
+
     IMAGES_WALKING = [
         './img_pollo_locco/img/2_character_pepe/2_walk/W-21.png',
         './img_pollo_locco/img/2_character_pepe/2_walk/W-22.png',
@@ -121,7 +126,13 @@ class Character extends MovableObject {
     }
 
 
+    /** there 2 states of sleep animation, 'awake' is like dancing - happens the first second when character is only standing
+     * 
+     */
     ifCharacterFallsAsleep() {
+        if (this.isSleepy() == 'awake') {
+            this.playAnimation(this.IMAGES_STANDING);
+        }
         if (this.isSleepy() == 'sleepy') {
             this.playAnimation(this.IMAGES_IDLE);
         }
@@ -164,6 +175,12 @@ class Character extends MovableObject {
     }
 
 
+    /** function clears ongoing intervals to safe ram
+     * 
+     * @param {number} intervalCalls - counts intervalcalls to stop animation after all images from dead was called
+     * @param {interval} intervalAnimate - to stop interval
+     * @param {interval} intervalSleep - to stop interval
+     */
     clearCharacterIntervals(intervalCalls, intervalAnimate, intervalSleep) {
         if (intervalCalls == this.IMAGES_DEAD.length) {  // calls dead Animation only 1 times // need to y go down
             clearInterval(intervalAnimate);
@@ -175,6 +192,9 @@ class Character extends MovableObject {
     }
 
 
+    /** checks if character is jumping / was hit / or is walking
+     * 
+     */
     if_jump_Hurt_Walk() {
         if (this.isAboveGround()) {
             this.playAnimation(this.IMAGES_JUMPING);

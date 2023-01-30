@@ -8,13 +8,10 @@ level1 = new Level(
      new Chicken(),
      new Chicken(),
      new Chicken(),
-     new Chicken(),
-     new Chicken(),
-     new Chicken(),
-     new Chicken(),
      new MiniChicken(),
      new MiniChicken(),
      new MiniChicken(),
+     new crazyChicken(),
        new Endboss(),
     ],
     
@@ -65,5 +62,7 @@ level1 = new Level(
     ]
     
     ); 
+
+
 
 }

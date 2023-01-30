@@ -1,9 +1,9 @@
-class Chicken extends MovableObject {
+class crazyChicken extends MovableObject {
 
-    height = 80;
+    height = 200;
     speed = 0.2;  
-    energy = 20; 
-    y = 470; 
+    energy = 40; 
+    y = 360; 
 
     offset = {
         top: 5,
@@ -30,12 +30,13 @@ class Chicken extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_FLAT);
 
-        this.x = 1000 + Math.random() * 6000; // Zahl zwischen  math.random generiert zahl zwischen 0 und 1
-        this.speed = 0.15 + Math.random() * 2; 
+        this.x = 5000 + Math.random() * 3000; // Zahl zwischen  math.random generiert zahl zwischen 0 und 1
+        this.speed = 0.5; 
         this.animate(); 
     }
 
 
+    
     // calls randomly a death sound for flated chicken
     randomDeadSound() {
         let randomNumber =  (Math.random() * 2); 
@@ -49,7 +50,7 @@ class Chicken extends MovableObject {
         } 
     }
 
-    // calls the animation for object 
+ 
     animate() {
         this.moving(); 
         let animateInterval = setInterval(() => {
@@ -79,23 +80,11 @@ class Chicken extends MovableObject {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+

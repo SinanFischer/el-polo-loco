@@ -13,15 +13,13 @@ window.onresize = function () {
 // adjusts the view 
 function checkViewportWidth() {
     if (window.matchMedia("(max-width: 1300px)").matches) {
-        // Viewport is less or equal to 1300 pixels wide
+        // Viewport is less or equal to 1300 pixels wide       
         isOnMobile = true;
         resizeCanvas(); 
 
     } else {
         // Viewport is greater than 1300 pixels wide
         isOnMobile = false;
-        document.getElementById("canvas").style.width = `1300px`;
-        document.getElementById("canvas").style.height = `600px`;
     }
 }
 
@@ -37,6 +35,7 @@ function rotateScreen() {
 }
 
 
+// resizing the canvas to full width and heigt on fullscreen or mobile
 function resizeCanvas() {
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
@@ -50,6 +49,7 @@ function showMobileControls() {
     document.getElementById('controls').style.display = "flex";
     document.getElementById('fullscreen-btn').style.display = "flex";
 }
+
 
 function hideMobileControls() {
     if (isOnMobile) {
@@ -66,12 +66,15 @@ function hideMobileControls() {
 
 function toggleFullscreen() {
     let fullscreen = document.getElementById('fullscreen');
-    if (!fullscreenOpen && gameStarted) {
+    if (!fullscreenOpen && gameStarted) { // fullscreen will be activated
         fullscreenOpen = true;
-        openFullscreen(fullscreen);
+        document.getElementById("canvas").style.width = `100vw`;
+        document.getElementById("canvas").style.height = `100vh`;    
+        openFullscreen(fullscreen);                 
         console.log('Fullscreen wird gestartet'); 
+
     }
-    else if (fullscreenOpen) {
+    else if (fullscreenOpen) { // will be closed
         fullscreenOpen = false;
         closeFullscreen();
         console.log('Fullscreen wird geschlossen'); 
@@ -95,6 +98,7 @@ function openFullscreen(elem) {
 
 /* Close fullscreen */
 function closeFullscreen() {
+    if (!isOnMobile)canvasNormalsize(); 
     if (document.exitFullscreen) {
         document.exitFullscreen();
     } else if (document.webkitExitFullscreen) { /* Safari */
@@ -102,5 +106,11 @@ function closeFullscreen() {
     } else if (document.msExitFullscreen) { /* IE11 */
         document.msExitFullscreen();
     }
+}
+
+
+function canvasNormalsize() {
+    document.getElementById("canvas").style.width = `75vw`;
+    document.getElementById("canvas").style.height = `70vh`;   
 }
 ///////////////////////////////////// FULL SCREEN FUNCTIONS END ///////////////////////////////////////////////////

@@ -45,6 +45,15 @@ body {
     display: none;
     position: absolute;
     top: 20;
+    background: white;
+    color: black;
+    font-weight: 500;
+    font-family: 'Boogaloo';
+    border-radius: 5px;
+}
+
+.fullscreen-btn:hover {
+    cursor: pointer;
 }
 
 
@@ -129,8 +138,8 @@ canvas {
 
 
 .start-screen {
-    width: 90vw;
-    height: 80vh;
+    width: 75vw;
+    height: 70vh;
     background-color: black;
 
     display: flex;
@@ -349,6 +358,8 @@ canvas {
     flex-direction: column;
     width: 80%;
     gap: 10px;
+    overflow: auto;
+    margin-top: 5%;
 
 }
 
@@ -439,12 +450,6 @@ filter: alpha(opacity=0);
         font-size: 23px;
 
     }
-
-
-}
-
-
-@media (max-width: 1300px) {
 
     .webpage {
         display: block;

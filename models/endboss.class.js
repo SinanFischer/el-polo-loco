@@ -21,6 +21,7 @@ class Endboss extends MovableObject {
     flapping_sound = new Audio('./audio/endboss_chicken/chicken_flapping.mp3');
     boss_music_sound = new Audio('./audio/endboss_chicken/danger_approaching_sound.mp3');
     boss_music_sound_quieter = new Audio('./audio/endboss_chicken/danger_approaching_lowsound.mp3');
+    boss_death_sound = new Audio ('./audio/endboss_chicken/boss_death_sound.mp3'); 
 
     IMAGES_WALKING = [
         './img_pollo_locco/img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -82,6 +83,7 @@ class Endboss extends MovableObject {
 
     // Iv = Interval ///  do backend functions // starts initialzing first Boss Sequence and starts counter   
     bossFightStartSequence() {
+         
         backgroundsMusic.pause();
         this.boss_music_sound.play();
 
@@ -99,14 +101,24 @@ class Endboss extends MovableObject {
     bossEncounterSequence(encounterSequenceIv) {
         if (this.counter < 30) {
             this.speed = 10;
-            this.moveLeft();
+            this.moving();
         }
         if (this.counter > 54) {
             clearInterval(encounterSequenceIv);
             this.speed = 4;
             setInterval(() => {
-                this.moveLeft();
+                this.moving();
             }, 1000 / 60);
+        }
+    }
+
+
+    moving() {
+        if (!this.otherDirection) {
+            this.moveLeft();
+        }
+        if (this.otherDirection) {
+            this.moveRight();
         }
     }
 
@@ -141,6 +153,7 @@ class Endboss extends MovableObject {
     }
 
 
+    // sounds for war cry on fight begin with boss
     playStartSounds() {
         this.angry_attack_sound.play();
         this.boss_music_sound.pause();
@@ -170,6 +183,7 @@ class Endboss extends MovableObject {
     bossIsDead(i) {
         if (i > 2 && i <= 12) {
             this.y += 20;
+            this.boss_death_sound.play(); 
         }
          if (i > 12) {
             backToMenu(1); // 1 = win

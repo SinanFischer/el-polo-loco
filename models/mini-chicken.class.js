@@ -51,6 +51,7 @@ class MiniChicken extends MovableObject {
     }
 
 
+    // calls function when chicken is dead 
     chickenIsDead(animateInterval) {
         this.kill_sound.play();
         this.playAnimation(this.IMAGES_FLAT);

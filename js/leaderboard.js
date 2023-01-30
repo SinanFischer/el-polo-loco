@@ -30,22 +30,25 @@ let todayYear;
 
 function createLeaderboard(win) {
     createLeaderboardInfoHTML();
+    sortLeaderboard(); 
     leaderboard.forEach(player => { createLeaderboardPlayerHTML(player) });
     setCurrentDate(); 
     if (win) {
-        document.getElementById('input-div').innerHTML = `<input id="player-name" placeholder="Your Name" >  <div class="data"> ${todayDay}.${todayMonth}.${todayYear} </div> <div class="data">${bestTime} s</div>`;
+        document.getElementById('input-div').innerHTML = ` <input id="player-name" placeholder="Your Name" required >   <div class="data"> ${todayDay}.${todayMonth}.${todayYear} </div> <div class="data">${bestTime} s</div>`;
         document.getElementById('submit-button-div').innerHTML = ` <button class="submit-player-name" onclick="submitSignIn()"> Submit </button>`;
     }
+
 }
 
 
 // function saves/pushes new player to leaderboard
 async function submitSignIn() {
     let newPlayerName = document.getElementById('player-name').value;
+    if (newPlayerName === '') newPlayerName = 'anonym' 
     newPlayer = {
         "playerName": newPlayerName,
         "date": `${todayDay}.${todayMonth}.${todayYear}`,
-        "bestTime": bestTime,
+        "bestTime": `${bestTime} s`,
     };
 
     leaderboard.push(newPlayer);
@@ -79,6 +82,17 @@ function formatDate() {
 }
 
 
+// sorts the leaderboard by time
+function  sortLeaderboard() {
+    leaderboard = leaderboard.sort((a, b) => {
+        if (a.bestTime < b.bestTime) {
+          return -1;
+        }
+      });
+  
+}
+
+
 function createLeaderboardPlayerHTML(player) {
     document.getElementById('leaderboard').innerHTML += `
         <div class="table-row">
@@ -86,6 +100,7 @@ function createLeaderboardPlayerHTML(player) {
         </div>
     `;
 }
+
 
 
 function createLeaderboardInfoHTML() {

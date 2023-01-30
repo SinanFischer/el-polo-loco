@@ -84,15 +84,19 @@ class MovableObject extends drawableObject{
     }
 
 
+    /** returns sleep status of character
+     * 
+     * @returns {string} - first state of falling asleep and second state  sleeping
+     */
     isSleepy() {
         let timepassed = new Date().getTime() - this.lastMove; // difference in miliseconds
         timepassed = timepassed / 1000;  // Difference in seconds
 
-            if (timepassed < 2) {
-
+            if (timepassed < 1) {
+                return 'awake'; 
             }
              else if (timepassed <= 6) {
-                return 'sleepy'; // returns true when hurt is 3 seconds in past, otherwise returns false 
+                return 'sleepy'; 
             }
             else if (timepassed > 6) {
                 return 'sleeping'
@@ -159,6 +163,10 @@ class MovableObject extends drawableObject{
     moveLeft() {
         this.x -= this.speed;
     }
+
+
+
+
 
 
     jump() {
